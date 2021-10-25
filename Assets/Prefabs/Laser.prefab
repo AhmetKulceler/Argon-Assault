@@ -860,7 +860,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
@@ -3788,7 +3788,7 @@ ParticleSystem:
     quality: 0
     voxelSize: 0.5
     collisionMessages: 1
-    collidesWithDynamic: 0
+    collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
     enabled: 0

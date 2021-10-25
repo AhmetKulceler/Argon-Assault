@@ -5,17 +5,21 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] GameObject enemyExplosion;
-    [SerializeField] GameObject enemyHit;
-    [SerializeField] Transform parent;
+    [SerializeField] GameObject enemyHit;    
     [SerializeField] int scorePerHit;
     [SerializeField] int hitPoints;
 
+    GameObject parentObject;
     ScoreBoard scoreBoard;
+    int maxScore;
 
     void Start()
     {
+        maxScore = hitPoints;
         scoreBoard = FindObjectOfType<ScoreBoard>();
-    }
+        parentObject = GameObject.FindWithTag("SpawnAtRuntime");
+        AddRigidbody();
+    }      
 
     private void OnParticleCollision(GameObject other)
     {
@@ -27,11 +31,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void AddRigidbody()
+    {
+        Rigidbody enemyRb = gameObject.AddComponent<Rigidbody>();
+        enemyRb.useGravity = false;
+    }
+
     private void ProcessHitAndScore()
     {
         hitPoints -= scorePerHit;
         GameObject vfx = Instantiate(enemyHit, transform.position, Quaternion.identity);
-        vfx.transform.parent = parent;
+        vfx.transform.parent = parentObject.transform;
 
         scoreBoard.IncreaseScore(scorePerHit);
     }
@@ -39,8 +49,9 @@ public class Enemy : MonoBehaviour
     private void DestroyEnemy()
     {
         GameObject vfx = Instantiate(enemyExplosion, transform.position, Quaternion.identity);
-        vfx.transform.parent = parent;
+        vfx.transform.parent = parentObject.transform;
 
+        scoreBoard.IncreaseScore(maxScore);
         Destroy(gameObject);
     }
 }
